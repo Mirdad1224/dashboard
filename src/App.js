@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useRoutes } from "react-router-dom";
+import routes from "./routes";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import Backdrop from "./components/Backdrop";
+import { useState } from "react";
 
 function App() {
+  const router = useRoutes(routes);
+  const [isSideOpen, setIsSideOpen] = useState(false);
+
+  const sideBarHandler = () => {
+    setIsSideOpen((prevState) => !prevState);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="w-full h-screen overflow-x-hidden">
+        <Sidebar isOpen={isSideOpen} onSidebar={sideBarHandler} />
+        <Header onSidebar={sideBarHandler} />
+        {router}
+        {isSideOpen && <Backdrop onUserClick={sideBarHandler} />}
+      </div>
   );
 }
 
